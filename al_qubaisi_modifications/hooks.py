@@ -1,6 +1,6 @@
 app_name = "al_qubaisi_modifications"
 app_title = "Al-Qubaisi Modifications"
-app_publisher = "Acube Innoivations Pvt Luimited"
+app_publisher = "Acube Innoivations Pvt Limited"
 app_description = "Modifications in Al-Qubaisi"
 app_email = "admin@acube.co"
 app_license = "mit"
