@@ -95,9 +95,11 @@ def get_data(filters, document_types):
 		as_dict=True,
 	)
 
+	today = getdate(nowdate())
 	employees = {}
+	expiries = {}
 	for row in rows:
-		record = employees.setdefault(
+		employees.setdefault(
 			row.employee,
 			{
 				"employee": row.employee,
@@ -109,9 +111,16 @@ def get_data(filters, document_types):
 		)
 		if row.document_type in document_types and row.expiry_date:
 			fieldname = frappe.scrub(row.document_type)
-			# keep the earliest expiry if the same document appears twice
-			if not record.get(fieldname) or getdate(row.expiry_date) < getdate(record[fieldname]):
-				record[fieldname] = row.expiry_date
+			expiries.setdefault(row.employee, {}).setdefault(fieldname, []).append(
+				getdate(row.expiry_date)
+			)
+
+	for employee, per_type in expiries.items():
+		for fieldname, dates in per_type.items():
+			# expired rows are superseded by a renewal: if any un-expired row exists,
+			# show the earliest upcoming expiry; otherwise show the latest expired one
+			upcoming = [d for d in dates if d >= today]
+			employees[employee][fieldname] = min(upcoming) if upcoming else max(dates)
 
 	data = list(employees.values())
 
