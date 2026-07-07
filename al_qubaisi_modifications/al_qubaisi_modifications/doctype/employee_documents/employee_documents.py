@@ -41,15 +41,18 @@ class EmployeeDocuments(Document):
 					alert=True,
 				)
 
-			if row.document_type in seen_types:
-				frappe.msgprint(
-					_("Row #{0}: {1} is entered more than once").format(
-						row.idx, frappe.bold(row.document_type)
-					),
-					indicator="orange",
-					alert=True,
-				)
-			seen_types.add(row.document_type)
+			# renewals legitimately repeat a document type (old expired row + new row),
+			# so only warn when two un-expired rows share the same type
+			if not is_row_expired(row):
+				if row.document_type in seen_types:
+					frappe.msgprint(
+						_("Row #{0}: {1} has more than one active (non-expired) entry").format(
+							row.idx, frappe.bold(row.document_type)
+						),
+						indicator="orange",
+						alert=True,
+					)
+				seen_types.add(row.document_type)
 
 	def set_statuses(self):
 		for row in self.documents:
@@ -57,6 +60,14 @@ class EmployeeDocuments(Document):
 				continue
 			settings = get_document_type_settings(row.document_type)
 			row.status = get_expiry_status(row.expiry_date, settings.reminder_days)
+
+
+def is_row_expired(row):
+	if row.status == "Expired":
+		return True
+	if not row.expiry_date:
+		return False
+	return getdate(row.expiry_date) < getdate(nowdate())
 
 
 def get_document_type_settings(document_type):
@@ -125,6 +136,18 @@ def send_expiry_digest():
 			and child.expiry_date <= date_add(curdate(), interval coalesce(dt.reminder_days, 30) day)
 			and ifnull(child.status, '') != 'Not Applicable'
 			and ifnull(parent.employee_status, 'Active') = 'Active'
+			-- skip expired rows that have already been renewed
+			-- (a newer un-expired row of the same type exists)
+			and not (
+				child.expiry_date < curdate()
+				and exists (
+					select 1 from `tabEmployee Documents Detail` renewed
+					where renewed.parent = child.parent
+						and renewed.document_type = child.document_type
+						and renewed.name != child.name
+						and renewed.expiry_date >= curdate()
+				)
+			)
 		order by child.expiry_date asc, parent.employee_name asc
 		""",
 		as_dict=True,

@@ -57,20 +57,53 @@ function render_document_cards(frm) {
 	inject_card_styles();
 
 	const rows = (frm.doc.documents || []).filter((r) => r.document_type);
-	if (!rows.length) {
+
+	// hide an expired card when a non-expired row of the same document type exists
+	// (i.e. it has already been renewed)
+	const active_types = new Set(
+		rows.filter((r) => !is_row_expired(r)).map((r) => r.document_type)
+	);
+	const visible_rows = rows.filter(
+		(r) => !(is_row_expired(r) && active_types.has(r.document_type))
+	);
+
+	if (!visible_rows.length) {
 		field.$wrapper.html(
 			`<div class="emp-doc-empty text-muted">${__("No documents added yet")}</div>`
 		);
 		return;
 	}
 
-	const cards = rows.map((row) => build_card(frm, row)).join("");
+	const cards = visible_rows.map((row) => build_card(frm, row)).join("");
 	field.$wrapper.html(`<div class="emp-doc-cards">${cards}</div>`);
 
 	field.$wrapper.find(".emp-doc-renew").on("click", function () {
 		const row_name = $(this).closest(".emp-doc-card").data("row");
-		frappe.model.set_value("Employee Documents Detail", row_name, "status", "Renewal In Progress");
+		const old_row = locals["Employee Documents Detail"][row_name];
+		if (!old_row) return;
+
+		frm.add_child("documents", {
+			document_type: old_row.document_type,
+			issuing_authority: old_row.issuing_authority,
+			issue_date: frappe.datetime.get_today(),
+			status: "Active",
+		});
+		frm.refresh_field("documents");
+		render_document_cards(frm);
+
+		frappe.show_alert({
+			message: __("Renewal row added for {0}. Enter the new Reference No and Expiry Date, then save.", [
+				old_row.document_type,
+			]),
+			indicator: "green",
+		});
 	});
+}
+
+function is_row_expired(row) {
+	if (row.status === "Expired") return true;
+	if (!row.expiry_date) return false;
+	return frappe.datetime.get_day_diff(row.expiry_date, frappe.datetime.get_today()) < 0;
 }
 
 function build_card(frm, row) {
