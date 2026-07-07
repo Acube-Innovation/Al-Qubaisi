@@ -148,23 +148,12 @@ app_license = "mit"
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"al_qubaisi_modifications.tasks.all"
-# 	],
-# 	"daily": [
-# 		"al_qubaisi_modifications.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"al_qubaisi_modifications.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"al_qubaisi_modifications.tasks.weekly"
-# 	],
-# 	"monthly": [
-# 		"al_qubaisi_modifications.tasks.monthly"
-# 	],
-# }
+scheduler_events = {
+	"daily": [
+		"al_qubaisi_modifications.al_qubaisi_modifications.doctype.employee_documents.employee_documents.update_document_statuses",
+		"al_qubaisi_modifications.al_qubaisi_modifications.doctype.employee_documents.employee_documents.send_expiry_digest",
+	],
+}
 
 # Testing
 # -------
