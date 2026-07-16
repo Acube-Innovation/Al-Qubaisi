@@ -20,6 +20,7 @@
   "sec_totals",
   "total_qty",
   "total",
+  "total_discount",
   "col_break_2",
   "total_taxes_and_charges",
   "grand_total",
@@ -27,7 +28,6 @@
   "payments",
   "sec_payment_totals",
   "total_payment_amount",
-  "total_discount",
   "col_break_3",
   "net_payment",
   "amended_from"
@@ -115,6 +115,12 @@
    "read_only": 1
   },
   {
+   "fieldname": "total_discount",
+   "fieldtype": "Currency",
+   "label": "Total Discount",
+   "read_only": 1
+  },
+  {
    "fieldname": "col_break_2",
    "fieldtype": "Column Break"
   },
@@ -150,13 +156,7 @@
   {
    "fieldname": "total_payment_amount",
    "fieldtype": "Currency",
-   "label": "Total Payment",
-   "read_only": 1
-  },
-  {
-   "fieldname": "total_discount",
-   "fieldtype": "Currency",
-   "label": "Total Discount",
+   "label": "Total Paid",
    "read_only": 1
   },
   {
@@ -167,7 +167,7 @@
    "bold": 1,
    "fieldname": "net_payment",
    "fieldtype": "Currency",
-   "label": "Net Payment (after Discount)",
+   "label": "Balance (Grand Total - Paid)",
    "read_only": 1
   },
   {
@@ -185,7 +185,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-07-15 14:05:00.000000",
+ "modified": "2026-07-16 10:00:00.000000",
  "modified_by": "Administrator",
  "module": "Al-Qubaisi Modifications",
  "name": "Branch Sales",

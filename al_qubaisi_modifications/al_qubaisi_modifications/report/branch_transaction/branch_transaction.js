@@ -4,48 +4,53 @@
 frappe.query_reports["Branch Transaction"] = {
 	filters: [
 		{
-			fieldname: "company",
-			label: __("Company"),
+			fieldname: "customer",
+			label: __("Customer"),
 			fieldtype: "Link",
-			options: "Company",
-			default: frappe.defaults.get_user_default("Company"),
-		},
-		{
-			fieldname: "branch",
-			label: __("Branch"),
-			fieldtype: "Link",
-			options: "Branch",
-		},
-		{
-			fieldname: "item_code",
-			label: __("Item"),
-			fieldtype: "Link",
-			options: "Item",
+			options: "Customer",
+			reqd: 1,
+			get_query: () => ({ filters: { custom_is_branch: 1 } }),
 		},
 		{
 			fieldname: "from_date",
 			label: __("From Date"),
 			fieldtype: "Date",
+			reqd: 1,
 			default: frappe.datetime.add_months(frappe.datetime.get_today(), -1),
 		},
 		{
 			fieldname: "to_date",
 			label: __("To Date"),
 			fieldtype: "Date",
+			reqd: 1,
 			default: frappe.datetime.get_today(),
-		},
-		{
-			fieldname: "hide_zero_balance",
-			label: __("Hide Zero Balance"),
-			fieldtype: "Check",
 		},
 	],
 
+	onload(report) {
+		// Always default to a branch-customer so the statement is populated on open.
+		if (!frappe.query_report.get_filter_value("customer")) {
+			frappe.db
+				.get_list("Customer", {
+					filters: { custom_is_branch: 1 },
+					limit: 1,
+					order_by: "name asc",
+				})
+				.then((rows) => {
+					if (rows && rows.length) {
+						frappe.query_report.set_filter_value("customer", rows[0].name);
+					}
+				});
+		}
+	},
+
 	formatter(value, row, column, data, default_formatter) {
 		value = default_formatter(value, row, column, data);
-		if (column.fieldname === "balance_qty" && data && flt(data.balance_qty) < 0) {
-			// sold more than was delivered — flag the shortfall
-			value = `<span style="color: var(--red-600); font-weight: bold;">${value}</span>`;
+		if (data && (data.is_opening || data.is_total)) {
+			value = `<b>${value}</b>`;
+		}
+		if (column.fieldname === "balance" && data && flt(data.balance) < 0) {
+			value = `<span style="color: var(--red-600);">${value}</span>`;
 		}
 		return value;
 	},
