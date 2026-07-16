@@ -3,14 +3,167 @@
 
 import frappe
 from frappe import _
-from frappe.utils import flt
+from frappe.utils import add_months, flt, getdate, today
 
 
 def execute(filters=None):
 	filters = frappe._dict(filters or {})
+
+	# Default date range: last one month up to today.
+	if not filters.from_date:
+		filters.from_date = add_months(today(), -1)
+	if not filters.to_date:
+		filters.to_date = today()
+
 	columns = get_columns()
-	data = get_data(filters)
+
+	# A customer (branch) is required to build the statement.
+	if not filters.customer:
+		return columns, []
+
+	branch = frappe.db.get_value("Customer", filters.customer, "custom_branch")
+
+	data = []
+
+	# 1) Opening balance up to (but excluding) the from_date. Zero when nothing exists.
+	opening = get_opening_balance(filters, branch)
+	data.append(
+		{
+			"branch": branch,
+			"transaction": _("Opening Balance"),
+			"date": filters.from_date,
+			"reference": None,
+			"purchase": None,
+			"sales": None,
+			"balance": opening,
+			"is_opening": 1,
+		}
+	)
+
+	# 2) Transactions inside the period, ordered by date.
+	balance = opening
+	total_purchase = total_sales = 0.0
+	for txn in get_transactions(filters, branch):
+		balance += flt(txn["purchase"]) - flt(txn["sales"])
+		total_purchase += flt(txn["purchase"])
+		total_sales += flt(txn["sales"])
+		data.append(
+			{
+				"branch": branch,
+				"transaction": txn["transaction"],
+				"transaction_doctype": txn["transaction_doctype"],
+				"date": txn["date"],
+				"reference": txn["reference"],
+				"purchase": flt(txn["purchase"]) or None,
+				"sales": flt(txn["sales"]) or None,
+				"balance": balance,
+			}
+		)
+
+	# 3) Closing total row.
+	data.append(
+		{
+			"branch": None,
+			"transaction": _("Total"),
+			"date": None,
+			"reference": None,
+			"purchase": total_purchase,
+			"sales": total_sales,
+			"balance": balance,
+			"is_total": 1,
+		}
+	)
+
 	return columns, data
+
+
+def get_opening_balance(filters, branch):
+	"""Purchases (Delivery Notes) minus Sales (Branch Sales) before the from_date."""
+	opening_purchase = flt(
+		frappe.db.get_value(
+			"Delivery Note",
+			{
+				"customer": filters.customer,
+				"docstatus": 1,
+				"posting_date": ["<", filters.from_date],
+			},
+			"sum(grand_total)",
+		)
+	)
+
+	opening_sales = 0.0
+	if branch:
+		opening_sales = flt(
+			frappe.db.get_value(
+				"Branch Sales",
+				{
+					"branch": branch,
+					"docstatus": 1,
+					"posting_date": ["<", filters.from_date],
+				},
+				"sum(grand_total)",
+			)
+		)
+
+	return opening_purchase - opening_sales
+
+
+def get_transactions(filters, branch):
+	"""Delivery Notes (branch purchases) + Branch Sales, amount only, sorted by date."""
+	rows = []
+
+	delivery_notes = frappe.get_all(
+		"Delivery Note",
+		filters={
+			"customer": filters.customer,
+			"docstatus": 1,
+			"posting_date": ["between", [filters.from_date, filters.to_date]],
+		},
+		fields=["name", "posting_date", "grand_total"],
+	)
+	for dn in delivery_notes:
+		rows.append(
+			{
+				"transaction": "Delivery Note",
+				"transaction_doctype": "Delivery Note",
+				"date": getdate(dn.posting_date),
+				"reference": dn.name,
+				"purchase": flt(dn.grand_total),
+				"sales": 0.0,
+			}
+		)
+
+	if branch:
+		branch_sales = frappe.get_all(
+			"Branch Sales",
+			filters={
+				"branch": branch,
+				"docstatus": 1,
+				"posting_date": ["between", [filters.from_date, filters.to_date]],
+			},
+			fields=["name", "posting_date", "grand_total"],
+		)
+		for bs in branch_sales:
+			rows.append(
+				{
+					"transaction": "Branch Sales",
+					"transaction_doctype": "Branch Sales",
+					"date": getdate(bs.posting_date),
+					"reference": bs.name,
+					"purchase": 0.0,
+					"sales": flt(bs.grand_total),
+				}
+			)
+
+	# Order by date; on ties show the purchase (delivery) before the sale.
+	rows.sort(
+		key=lambda r: (
+			r["date"],
+			0 if r["transaction"] == "Delivery Note" else 1,
+			r["reference"],
+		)
+	)
+	return rows
 
 
 def get_columns():
@@ -20,173 +173,43 @@ def get_columns():
 			"label": _("Branch"),
 			"fieldtype": "Link",
 			"options": "Branch",
-			"width": 150,
+			"width": 170,
 		},
 		{
-			"fieldname": "item_code",
-			"label": _("Item"),
-			"fieldtype": "Link",
-			"options": "Item",
-			"width": 150,
-		},
-		{
-			"fieldname": "item_name",
-			"label": _("Item Name"),
+			"fieldname": "transaction",
+			"label": _("Transaction"),
 			"fieldtype": "Data",
-			"width": 200,
-		},
-		# Input side: stock delivered to the branch's customer account (outward from company)
-		{
-			"fieldname": "outward_qty",
-			"label": _("Outward Qty"),
-			"fieldtype": "Float",
-			"width": 110,
+			"width": 130,
 		},
 		{
-			"fieldname": "outward_amount",
-			"label": _("Outward Amount"),
+			"fieldname": "date",
+			"label": _("Date"),
+			"fieldtype": "Date",
+			"width": 100,
+		},
+		{
+			"fieldname": "reference",
+			"label": _("Reference"),
+			"fieldtype": "Dynamic Link",
+			"options": "transaction_doctype",
+			"width": 180,
+		},
+		{
+			"fieldname": "purchase",
+			"label": _("Branch Purchase"),
 			"fieldtype": "Currency",
-			"width": 130,
-		},
-		# Output side: what the branch sold (Branch Sales)
-		{
-			"fieldname": "sales_qty",
-			"label": _("Branch Sales Qty"),
-			"fieldtype": "Float",
-			"width": 130,
+			"width": 140,
 		},
 		{
-			"fieldname": "sales_amount",
-			"label": _("Branch Sales Amount"),
+			"fieldname": "sales",
+			"label": _("Branch Sales"),
+			"fieldtype": "Currency",
+			"width": 140,
+		},
+		{
+			"fieldname": "balance",
+			"label": _("Balance"),
 			"fieldtype": "Currency",
 			"width": 150,
 		},
-		# Balance: what was delivered but not yet sold
-		{
-			"fieldname": "balance_qty",
-			"label": _("Balance Qty"),
-			"fieldtype": "Float",
-			"width": 110,
-		},
-		{
-			"fieldname": "balance_amount",
-			"label": _("Balance Amount"),
-			"fieldtype": "Currency",
-			"width": 130,
-		},
 	]
-
-
-def get_data(filters):
-	rows = {}
-
-	def bucket(branch, item_code, item_name):
-		key = (branch, item_code)
-		return rows.setdefault(
-			key,
-			{
-				"branch": branch,
-				"item_code": item_code,
-				"item_name": item_name,
-				"outward_qty": 0.0,
-				"outward_amount": 0.0,
-				"sales_qty": 0.0,
-				"sales_amount": 0.0,
-			},
-		)
-
-	for row in get_outward_stock(filters):
-		record = bucket(row.branch, row.item_code, row.item_name)
-		record["outward_qty"] += flt(row.qty)
-		record["outward_amount"] += flt(row.amount)
-
-	for row in get_branch_sales(filters):
-		record = bucket(row.branch, row.item_code, row.item_name)
-		record["sales_qty"] += flt(row.qty)
-		record["sales_amount"] += flt(row.amount)
-
-	data = []
-	for record in rows.values():
-		record["balance_qty"] = flt(record["outward_qty"]) - flt(record["sales_qty"])
-		record["balance_amount"] = flt(record["outward_amount"]) - flt(record["sales_amount"])
-		if filters.get("hide_zero_balance") and not record["balance_qty"]:
-			continue
-		data.append(record)
-
-	data.sort(key=lambda r: (r["branch"] or "", r["item_name"] or r["item_code"] or ""))
-	return data
-
-
-def get_outward_stock(filters):
-	"""Input side: Delivery Notes issued to a branch's customer account.
-
-	From the company's point of view this is outward stock; from the branch's
-	point of view it is the stock that came in and is available to sell.
-	"""
-	conditions = [
-		"dn.docstatus = 1",
-		"ifnull(cust.custom_is_branch, 0) = 1",
-		"cust.custom_branch is not null",
-	]
-	values = {}
-	if filters.get("company"):
-		conditions.append("dn.company = %(company)s")
-		values["company"] = filters.company
-	if filters.get("branch"):
-		conditions.append("cust.custom_branch = %(branch)s")
-		values["branch"] = filters.branch
-	if filters.get("from_date"):
-		conditions.append("dn.posting_date >= %(from_date)s")
-		values["from_date"] = filters.from_date
-	if filters.get("to_date"):
-		conditions.append("dn.posting_date <= %(to_date)s")
-		values["to_date"] = filters.to_date
-	if filters.get("item_code"):
-		conditions.append("dni.item_code = %(item_code)s")
-		values["item_code"] = filters.item_code
-
-	return frappe.db.sql(
-		"""
-		select cust.custom_branch as branch, dni.item_code, dni.item_name,
-			dni.qty as qty, dni.base_amount as amount
-		from `tabDelivery Note Item` dni
-		inner join `tabDelivery Note` dn on dn.name = dni.parent
-		inner join `tabCustomer` cust on cust.name = dn.customer
-		where {conditions}
-		""".format(conditions=" and ".join(conditions)),
-		values,
-		as_dict=True,
-	)
-
-
-def get_branch_sales(filters):
-	"""Output side: items sold by the branch, recorded via Branch Sales."""
-	conditions = ["bs.docstatus = 1"]
-	values = {}
-	if filters.get("company"):
-		conditions.append("bs.company = %(company)s")
-		values["company"] = filters.company
-	if filters.get("branch"):
-		conditions.append("bs.branch = %(branch)s")
-		values["branch"] = filters.branch
-	if filters.get("from_date"):
-		conditions.append("bs.posting_date >= %(from_date)s")
-		values["from_date"] = filters.from_date
-	if filters.get("to_date"):
-		conditions.append("bs.posting_date <= %(to_date)s")
-		values["to_date"] = filters.to_date
-	if filters.get("item_code"):
-		conditions.append("bsi.item_code = %(item_code)s")
-		values["item_code"] = filters.item_code
-
-	return frappe.db.sql(
-		"""
-		select bs.branch as branch, bsi.item_code, bsi.item_name,
-			bsi.qty as qty, bsi.amount as amount
-		from `tabBranch Sales Item` bsi
-		inner join `tabBranch Sales` bs on bs.name = bsi.parent
-		where {conditions}
-		""".format(conditions=" and ".join(conditions)),
-		values,
-		as_dict=True,
-	)
