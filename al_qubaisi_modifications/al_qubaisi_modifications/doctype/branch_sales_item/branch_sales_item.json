@@ -8,6 +8,7 @@
  "field_order": [
   "item_code",
   "item_name",
+  "pos_item_name",
   "amount",
   "discount_amount",
   "discount_percent",
@@ -98,13 +99,19 @@
   {
    "fieldname": "column_break_tuxc",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pos_item_name",
+   "fieldtype": "Data",
+   "label": "POS Item Name",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-07-16 09:30:08.595392",
+ "modified": "2026-07-22 09:05:00.000000",
  "modified_by": "Administrator",
  "module": "Al-Qubaisi Modifications",
  "name": "Branch Sales Item",
