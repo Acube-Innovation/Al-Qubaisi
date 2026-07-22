@@ -1,0 +1,103 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-07-22 09:00:00",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "enabled",
+  "sec_connection",
+  "base_url",
+  "api_key",
+  "col_break_conn",
+  "api_keyid",
+  "sec_items",
+  "pos_item_group",
+  "default_company"
+ ],
+ "fields": [
+  {
+   "default": "1",
+   "description": "Master switch. When unchecked the scheduled sync does nothing.",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enabled"
+  },
+  {
+   "fieldname": "sec_connection",
+   "fieldtype": "Section Break",
+   "label": "Connection"
+  },
+  {
+   "default": "https://node-uae1.lithospos.com/openApi/v1",
+   "description": "Base URL without a trailing slash. The store id and endpoint are appended.",
+   "fieldname": "base_url",
+   "fieldtype": "Data",
+   "label": "Base URL",
+   "reqd": 1
+  },
+  {
+   "fieldname": "api_key",
+   "fieldtype": "Password",
+   "label": "API Key",
+   "reqd": 1
+  },
+  {
+   "fieldname": "col_break_conn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "api_keyid",
+   "fieldtype": "Password",
+   "label": "API Key ID",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sec_items",
+   "fieldtype": "Section Break",
+   "label": "Item Creation"
+  },
+  {
+   "default": "Finished Goods",
+   "description": "Item Group used for POS menu items created automatically by the sync.",
+   "fieldname": "pos_item_group",
+   "fieldtype": "Link",
+   "label": "POS Item Group",
+   "options": "Item Group",
+   "reqd": 1
+  },
+  {
+   "description": "Used when the branch's Cost Center does not resolve a company. Branch to store mapping lives on the Branch doctype.",
+   "fieldname": "default_company",
+   "fieldtype": "Link",
+   "label": "Default Company",
+   "options": "Company",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-07-22 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Al-Qubaisi Modifications",
+ "name": "LithosPOS Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

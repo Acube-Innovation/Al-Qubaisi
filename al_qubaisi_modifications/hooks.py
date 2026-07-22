@@ -154,6 +154,12 @@ scheduler_events = {
 		"al_qubaisi_modifications.al_qubaisi_modifications.doctype.employee_documents.employee_documents.update_document_statuses",
 		"al_qubaisi_modifications.al_qubaisi_modifications.doctype.employee_documents.employee_documents.send_expiry_digest",
 	],
+	"cron": {
+		# 02:00 Asia/Dubai - late enough for tills trading past midnight to have closed out.
+		"0 2 * * *": [
+			"al_qubaisi_modifications.lithos.sync_yesterday",
+		],
+	},
 }
 
 # Testing
