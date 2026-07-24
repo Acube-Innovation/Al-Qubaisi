@@ -1,0 +1,107 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-07-24 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "document_type",
+  "reference_no",
+  "issuing_authority",
+  "column_break_dates",
+  "issue_date",
+  "expiry_date",
+  "status",
+  "section_break_more",
+  "attachments",
+  "renewal_cost",
+  "column_break_more",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "document_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Document Type",
+   "options": "Company Document Type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "reference_no",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Reference No"
+  },
+  {
+   "description": "e.g. Dubai DED, Sharjah Municipality — useful for trade licence and permit records",
+   "fieldname": "issuing_authority",
+   "fieldtype": "Data",
+   "label": "Issuing Authority / Place of Issue"
+  },
+  {
+   "fieldname": "column_break_dates",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "issue_date",
+   "fieldtype": "Date",
+   "label": "Issue Date"
+  },
+  {
+   "fieldname": "expiry_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Expiry Date"
+  },
+  {
+   "default": "Active",
+   "description": "Active / Expiring Soon / Expired are set automatically from the Expiry Date. Renewal In Progress and Not Applicable are set manually and never overwritten.",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Active\nExpiring Soon\nExpired\nRenewal In Progress\nNot Applicable"
+  },
+  {
+   "fieldname": "section_break_more",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "attachments",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Attachment"
+  },
+  {
+   "fieldname": "renewal_cost",
+   "fieldtype": "Currency",
+   "label": "Renewal Cost"
+  },
+  {
+   "fieldname": "column_break_more",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-07-24 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Al-Qubaisi Modifications",
+ "name": "Company Documents Detail",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

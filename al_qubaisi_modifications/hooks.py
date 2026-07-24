@@ -165,6 +165,8 @@ scheduler_events = {
 	"daily": [
 		"al_qubaisi_modifications.al_qubaisi_modifications.doctype.employee_documents.employee_documents.update_document_statuses",
 		"al_qubaisi_modifications.al_qubaisi_modifications.doctype.employee_documents.employee_documents.send_expiry_digest",
+		"al_qubaisi_modifications.al_qubaisi_modifications.doctype.company_documents.company_documents.update_document_statuses",
+		"al_qubaisi_modifications.al_qubaisi_modifications.doctype.company_documents.company_documents.send_expiry_digest",
 	],
 	"cron": {
 		# 02:00 Asia/Dubai - late enough for tills trading past midnight to have closed out.
