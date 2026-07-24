@@ -43,7 +43,11 @@ app_license = "mit"
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-doctype_js = {"Sales Invoice": "public/js/sales_invoice.js"}
+doctype_js = {
+	"Sales Invoice": "public/js/sales_invoice.js",
+	"Material Request": "public/js/material_request.js",
+	"Sales Order": "public/js/sales_order.js",
+}
 # doctype_js = {"doctype" : "public/js/doctype.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
@@ -131,8 +135,16 @@ doctype_js = {"Sales Invoice": "public/js/sales_invoice.js"}
 # Override standard doctype classes
 
 override_doctype_class = {
-	"BOM": "al_qubaisi_modifications.overrides.bom.CustomBOM"
+	"BOM": "al_qubaisi_modifications.overrides.bom.CustomBOM",
+	"Material Request": "al_qubaisi_modifications.overrides.material_request.CustomMaterialRequest",
 }
+
+# Accounting Dimensions
+# ---------------------
+# Register the Material Request header so the Branch accounting dimension is
+# managed on it like on other transaction doctypes. The child (Material Request
+# Item) is already registered by ERPNext.
+accounting_dimension_doctypes = ["Material Request"]
 
 # Document Events
 # ---------------
