@@ -6,3 +6,4 @@
 # Patches added in this section will be executed after doctypes are migrated
 al_qubaisi_modifications.patches.rename_employee_document_fields
 al_qubaisi_modifications.patches.add_branch_operations_workspace_card
+al_qubaisi_modifications.patches.add_cheque_management_fields
