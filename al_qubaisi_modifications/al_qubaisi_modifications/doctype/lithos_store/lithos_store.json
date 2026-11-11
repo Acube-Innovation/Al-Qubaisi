@@ -1,0 +1,279 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "field:store_id",
+ "creation": "2026-11-03 09:00:00",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "store_id",
+  "terminal_id",
+  "outlet_name",
+  "brand",
+  "col_break_store",
+  "company",
+  "branch",
+  "sync_enabled",
+  "sync_from_date",
+  "sync_policy",
+  "sec_posting",
+  "warehouse",
+  "cost_center",
+  "consumption_account",
+  "ledger_from_date",
+  "col_break_posting",
+  "customer",
+  "selling_price_list",
+  "taxes_and_charges",
+  "sec_move",
+  "move_to_company",
+  "sec_last_sync",
+  "last_synced_date",
+  "last_sync_status",
+  "col_break_last_sync",
+  "last_sync_message",
+  "sec_notes",
+  "notes"
+ ],
+ "fields": [
+  {
+   "description": "Store id in the LithosPOS URL path, e.g. 141.",
+   "fieldname": "store_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Store ID",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "terminal_id",
+   "fieldtype": "Data",
+   "label": "Terminal ID"
+  },
+  {
+   "fieldname": "outlet_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Outlet Name"
+  },
+  {
+   "fieldname": "brand",
+   "fieldtype": "Data",
+   "in_standard_filter": 1,
+   "label": "Brand"
+  },
+  {
+   "fieldname": "col_break_store",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "The outlet company the store's sales post into. Several stores can share one company.",
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "description": "Kept as the reporting dimension on Branch Sales.",
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Branch",
+   "options": "Branch"
+  },
+  {
+   "default": "0",
+   "description": "Include this store in the nightly sync.",
+   "fieldname": "sync_enabled",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Sync Enabled"
+  },
+  {
+   "description": "Go-live date. Days before it are never pulled, not even by a backfill.",
+   "fieldname": "sync_from_date",
+   "fieldtype": "Date",
+   "label": "Sync From Date"
+  },
+  {
+   "description": "Blank uses the policy in LithosPOS Settings.",
+   "fieldname": "sync_policy",
+   "fieldtype": "Select",
+   "label": "Unmapped Item Policy",
+   "options": "\nHold\nSuspense\nAuto-create"
+  },
+  {
+   "fieldname": "sec_posting",
+   "fieldtype": "Section Break",
+   "label": "Posting"
+  },
+  {
+   "description": "Outlet warehouse that recipe consumption is issued from.",
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "label": "Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center"
+  },
+  {
+   "description": "Expense account for raw materials consumed by sales.",
+   "fieldname": "consumption_account",
+   "fieldtype": "Link",
+   "label": "Consumption Account",
+   "options": "Account"
+  },
+  {
+   "description": "From this day, each posted day also creates a Sales Invoice and a recipe Material Issue in the store's company (M6). Needs the company's TRN, a walk-in customer, the warehouse, cost center, consumption account and tax template. Blank: Branch Sales only.",
+   "fieldname": "ledger_from_date",
+   "fieldtype": "Date",
+   "label": "Ledger From Date"
+  },
+  {
+   "fieldname": "col_break_posting",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Walk-in customer for the day's sales. Falls back to the branch customer.",
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "selling_price_list",
+   "fieldtype": "Link",
+   "label": "Selling Price List",
+   "options": "Price List"
+  },
+  {
+   "fieldname": "taxes_and_charges",
+   "fieldtype": "Link",
+   "label": "Sales Taxes and Charges Template",
+   "options": "Sales Taxes and Charges Template"
+  },
+  {
+   "collapsible": 1,
+   "collapsible_depends_on": "move_to_company",
+   "fieldname": "sec_move",
+   "fieldtype": "Section Break",
+   "label": "Move to Outlet Company"
+  },
+  {
+   "description": "Set when this store's history must move to its outlet company (D3). The Re-post button moves the store and re-posts every day into this company.",
+   "fieldname": "move_to_company",
+   "fieldtype": "Link",
+   "label": "Re-post Into Company",
+   "options": "Company"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "sec_last_sync",
+   "fieldtype": "Section Break",
+   "label": "Last Sync"
+  },
+  {
+   "fieldname": "last_synced_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Last Synced Date",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_sync_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Last Sync Status",
+   "no_copy": 1,
+   "options": "\nPosted\nDraft\nHeld\nChanged\nNo sales\nSkipped\nFailed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_last_sync",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_sync_message",
+   "fieldtype": "Small Text",
+   "label": "Last Sync Message",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "sec_notes",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [
+  {
+   "link_doctype": "Branch Sales",
+   "link_fieldname": "lithos_store_id"
+  },
+  {
+   "link_doctype": "Lithos Item Map",
+   "link_fieldname": "store"
+  },
+  {
+   "link_doctype": "Lithos Sync Log",
+   "link_fieldname": "store"
+  }
+ ],
+ "modified": "2026-11-04 09:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Al-Qubaisi Modifications",
+ "name": "Lithos Store",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Lithos Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "search_fields": "outlet_name,company",
+ "show_title_field_in_link": 1,
+ "sort_field": "store_id",
+ "sort_order": "ASC",
+ "states": [],
+ "title_field": "outlet_name",
+ "track_changes": 1
+}

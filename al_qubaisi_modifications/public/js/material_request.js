@@ -58,14 +58,16 @@ function set_customer_from_branch(frm) {
 		return;
 	}
 
-	// The customer that represents a branch is flagged with custom_is_branch and
-	// points back to it through custom_branch.
-	frappe.db
-		.get_value("Customer", { custom_branch: frm.doc.branch, custom_is_branch: 1 }, "name")
+	// A branch whose store has its own outlet company buys as that company's
+	// internal customer; any other branch as its branch customer (M7).
+	frappe
+		.call({
+			method: "al_qubaisi_modifications.lithos_supply.get_supply_customer",
+			args: { branch: frm.doc.branch, company: frm.doc.company },
+		})
 		.then((r) => {
-			const customer = r.message && r.message.name;
-			if (customer) {
-				frm.set_value("customer", customer);
+			if (r.message) {
+				frm.set_value("customer", r.message);
 			}
 		});
 }

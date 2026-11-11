@@ -14,7 +14,14 @@
   "api_keyid",
   "sec_items",
   "pos_item_group",
-  "default_company"
+  "sec_sync",
+  "default_sync_policy",
+  "suspense_item",
+  "hold_without_bom",
+  "col_break_sync",
+  "look_back_days",
+  "max_retries",
+  "alert_recipients"
  ],
  "fields": [
   {
@@ -68,18 +75,63 @@
    "reqd": 1
   },
   {
-   "description": "Used when the branch's Cost Center does not resolve a company. Branch to store mapping lives on the Branch doctype.",
-   "fieldname": "default_company",
+   "fieldname": "sec_sync",
+   "fieldtype": "Section Break",
+   "label": "Sync"
+  },
+  {
+   "default": "Hold",
+   "description": "What a store does with a Lithos item that has no ERPNext item, unless the store sets its own. Hold keeps the day out of ERPNext until the item is mapped in the Lithos Item Workbench. Suspense posts it to the suspense item. Auto-create makes a new POS- item (the old behaviour, not recommended).",
+   "fieldname": "default_sync_policy",
+   "fieldtype": "Select",
+   "label": "Unmapped Item Policy",
+   "options": "Hold\nSuspense\nAuto-create"
+  },
+  {
+   "description": "Placeholder item for stores on the Suspense policy. Map the real item in the Workbench, then re-post the day.",
+   "fieldname": "suspense_item",
    "fieldtype": "Link",
-   "label": "Default Company",
-   "options": "Company",
-   "reqd": 1
+   "label": "Suspense Item",
+   "options": "Item"
+  },
+  {
+   "default": "0",
+   "description": "Also hold a day when a sold item has no default BOM (D9). Leave off until recipe consumption (M6) goes live.",
+   "fieldname": "hold_without_bom",
+   "fieldtype": "Check",
+   "label": "Hold Days With Items Without a BOM"
+  },
+  {
+   "fieldname": "col_break_sync",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "3",
+   "description": "The nightly run (02:00) also re-pulls this many earlier days. It posts any day still missing and flags a posted day whose Lithos total has changed.",
+   "fieldname": "look_back_days",
+   "fieldtype": "Int",
+   "label": "Look-back Days",
+   "non_negative": 1
+  },
+  {
+   "default": "3",
+   "description": "A failed day is retried hourly, waiting 1, 2, then 4 hours between tries.",
+   "fieldname": "max_retries",
+   "fieldtype": "Int",
+   "label": "Retries for a Failed Day",
+   "non_negative": 1
+  },
+  {
+   "description": "Email addresses, one per line. They get a summary when a scheduled run ends with failed, held or changed days.",
+   "fieldname": "alert_recipients",
+   "fieldtype": "Small Text",
+   "label": "Alert Recipients"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-07-22 10:00:00.000000",
+ "modified": "2026-11-03 18:00:00.000000",
  "modified_by": "Administrator",
  "module": "Al-Qubaisi Modifications",
  "name": "LithosPOS Settings",
@@ -91,6 +143,15 @@
    "print": 1,
    "read": 1,
    "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Lithos Manager",
    "share": 1,
    "write": 1
   }

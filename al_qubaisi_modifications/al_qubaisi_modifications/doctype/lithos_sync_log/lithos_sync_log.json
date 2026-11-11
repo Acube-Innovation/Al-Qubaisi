@@ -1,0 +1,278 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-11-03 18:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "store",
+  "posting_date",
+  "status",
+  "col_break_day",
+  "company",
+  "branch",
+  "branch_sales",
+  "sync_run",
+  "sec_amounts",
+  "rows_received",
+  "lithos_net",
+  "lithos_tax",
+  "void_total",
+  "col_break_amounts",
+  "erpnext_net",
+  "ignored_amount",
+  "variance",
+  "sec_items",
+  "policy",
+  "unmapped_lines",
+  "lines_without_bom",
+  "col_break_items",
+  "hold_reason",
+  "sec_attempts",
+  "retry_count",
+  "last_attempt",
+  "col_break_attempts",
+  "message",
+  "error_log",
+  "sec_payload",
+  "payload"
+ ],
+ "fields": [
+  {
+   "fieldname": "store",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Store",
+   "options": "Lithos Store",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Date",
+   "read_only": 1,
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Posted\nDraft\nHeld\nChanged\nNo sales\nFailed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_day",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Company",
+   "options": "Company",
+   "read_only": 1
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch",
+   "read_only": 1
+  },
+  {
+   "fieldname": "branch_sales",
+   "fieldtype": "Link",
+   "label": "Branch Sales",
+   "options": "Branch Sales",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sync_run",
+   "fieldtype": "Link",
+   "label": "Last Sync Run",
+   "options": "Lithos Sync Run",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sec_amounts",
+   "fieldtype": "Section Break",
+   "label": "Amounts"
+  },
+  {
+   "fieldname": "rows_received",
+   "fieldtype": "Int",
+   "label": "Lines Received",
+   "read_only": 1
+  },
+  {
+   "description": "Sum of the item rows, excluding VAT. The group header is not used.",
+   "fieldname": "lithos_net",
+   "fieldtype": "Currency",
+   "label": "Lithos Net",
+   "read_only": 1
+  },
+  {
+   "fieldname": "lithos_tax",
+   "fieldtype": "Currency",
+   "label": "Lithos VAT",
+   "read_only": 1
+  },
+  {
+   "description": "Information only: Sale already excludes voids.",
+   "fieldname": "void_total",
+   "fieldtype": "Currency",
+   "label": "Voided",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_amounts",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "erpnext_net",
+   "fieldtype": "Currency",
+   "label": "ERPNext Net",
+   "read_only": 1
+  },
+  {
+   "description": "Net of lines whose Lithos item is set to Ignored.",
+   "fieldname": "ignored_amount",
+   "fieldtype": "Currency",
+   "label": "Ignored Lines",
+   "read_only": 1
+  },
+  {
+   "description": "Lithos net minus ERPNext net minus ignored lines.",
+   "fieldname": "variance",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Variance",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sec_items",
+   "fieldtype": "Section Break",
+   "label": "Items"
+  },
+  {
+   "fieldname": "policy",
+   "fieldtype": "Data",
+   "label": "Policy Applied",
+   "read_only": 1
+  },
+  {
+   "fieldname": "unmapped_lines",
+   "fieldtype": "Int",
+   "label": "Unmapped Lines",
+   "read_only": 1
+  },
+  {
+   "fieldname": "lines_without_bom",
+   "fieldtype": "Int",
+   "label": "Lines Without a BOM",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_items",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "hold_reason",
+   "fieldtype": "Small Text",
+   "label": "Hold Reason",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sec_attempts",
+   "fieldtype": "Section Break",
+   "label": "Attempts"
+  },
+  {
+   "description": "Failed attempts since the day last succeeded.",
+   "fieldname": "retry_count",
+   "fieldtype": "Int",
+   "label": "Failed Attempts",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_attempt",
+   "fieldtype": "Datetime",
+   "label": "Last Attempt",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_attempts",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "message",
+   "fieldtype": "Small Text",
+   "label": "Message",
+   "read_only": 1
+  },
+  {
+   "fieldname": "error_log",
+   "fieldtype": "Link",
+   "label": "Error Log",
+   "options": "Error Log",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "sec_payload",
+   "fieldtype": "Section Break",
+   "label": "Lithos Payload"
+  },
+  {
+   "description": "The day's Sale group as LithosPOS sent it. Held days are re-posted from it.",
+   "fieldname": "payload",
+   "fieldtype": "Code",
+   "label": "Sale Group",
+   "options": "JSON",
+   "read_only": 1
+  }
+ ],
+ "in_create": 1,
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-11-03 18:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Al-Qubaisi Modifications",
+ "name": "Lithos Sync Log",
+ "naming_rule": "By script",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1
+  },
+  {
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Lithos Manager",
+   "share": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "posting_date",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 0
+}

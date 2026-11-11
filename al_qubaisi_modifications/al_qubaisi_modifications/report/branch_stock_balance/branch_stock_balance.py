@@ -130,19 +130,28 @@ def get_data(filters):
 	return data
 
 
+# The branch a delivery went to: from the Delivery Note's Branch dimension when it has one,
+# else from the branch customer it was issued to.
+BRANCH = "coalesce(nullif(dn.branch, ''), cust.custom_branch)"
+
+
 def get_outward_stock(filters, date_from=None, date_to=None, inclusive_to=True):
-	"""Delivery Notes issued to a branch's customer account (stock into the branch)."""
+	"""Delivery Notes issued to a branch's customer account (stock into the branch).
+
+	A branch whose store has its own outlet company is delivered to as that company's
+	internal customer (M7); the Delivery Note's Branch dimension names the branch.
+	"""
 	conditions = [
 		"dn.docstatus = 1",
-		"ifnull(cust.custom_is_branch, 0) = 1",
-		"cust.custom_branch is not null",
+		"""((ifnull(cust.custom_is_branch, 0) = 1 and cust.custom_branch is not null)
+			or (cust.is_internal_customer = 1 and ifnull(dn.branch, '') != ''))""",
 	]
 	values = {}
 	if filters.get("company"):
 		conditions.append("dn.company = %(company)s")
 		values["company"] = filters.company
 	if filters.get("branch"):
-		conditions.append("cust.custom_branch = %(branch)s")
+		conditions.append(f"{BRANCH} = %(branch)s")
 		values["branch"] = filters.branch
 	if filters.get("item_code"):
 		conditions.append("dni.item_code = %(item_code)s")
@@ -158,13 +167,13 @@ def get_outward_stock(filters, date_from=None, date_to=None, inclusive_to=True):
 
 	return frappe.db.sql(
 		"""
-		select cust.custom_branch as branch, dni.item_code, dni.item_name,
+		select {branch} as branch, dni.item_code, dni.item_name,
 			dni.qty as qty, dni.base_amount as amount
 		from `tabDelivery Note Item` dni
 		inner join `tabDelivery Note` dn on dn.name = dni.parent
 		inner join `tabCustomer` cust on cust.name = dn.customer
 		where {conditions}
-		""".format(conditions=" and ".join(conditions)),
+		""".format(branch=BRANCH, conditions=" and ".join(conditions)),
 		values,
 		as_dict=True,
 	)

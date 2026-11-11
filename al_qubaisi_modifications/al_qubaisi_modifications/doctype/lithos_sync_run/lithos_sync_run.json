@@ -1,0 +1,284 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "LSR-.YYYY.-.#####",
+ "creation": "2026-11-03 18:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "trigger",
+  "status",
+  "requested_by",
+  "col_break_run",
+  "from_date",
+  "to_date",
+  "started_at",
+  "finished_at",
+  "sec_scope",
+  "store_ids",
+  "col_break_scope",
+  "store_count",
+  "stores_done",
+  "stores_failed",
+  "sec_days",
+  "days_posted",
+  "days_existing",
+  "days_draft",
+  "days_no_sales",
+  "col_break_days",
+  "days_held",
+  "days_changed",
+  "days_failed",
+  "sec_lines",
+  "lines_unmapped",
+  "lines_without_bom",
+  "col_break_lines",
+  "lithos_net",
+  "erpnext_net",
+  "invoices_posted",
+  "consumption_pending",
+  "sec_message",
+  "message"
+ ],
+ "fields": [
+  {
+   "fieldname": "trigger",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Trigger",
+   "options": "Scheduled\nQuick\nBackfill\nRetry\nRe-post held\nRe-post\nLedger",
+   "read_only": 1
+  },
+  {
+   "default": "Queued",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Queued\nRunning\nSuccess\nPartial\nFailed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "requested_by",
+   "fieldtype": "Link",
+   "label": "Requested By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_run",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "From Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "To Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "started_at",
+   "fieldtype": "Datetime",
+   "label": "Started At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "finished_at",
+   "fieldtype": "Datetime",
+   "label": "Finished At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sec_scope",
+   "fieldtype": "Section Break",
+   "label": "Stores"
+  },
+  {
+   "fieldname": "store_ids",
+   "fieldtype": "Small Text",
+   "label": "Store IDs",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_scope",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "store_count",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Stores in Scope",
+   "read_only": 1
+  },
+  {
+   "fieldname": "stores_done",
+   "fieldtype": "Int",
+   "label": "Stores Done",
+   "read_only": 1
+  },
+  {
+   "description": "Stores whose job stopped before it reached every day, e.g. a rejected key.",
+   "fieldname": "stores_failed",
+   "fieldtype": "Int",
+   "label": "Stores Failed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sec_days",
+   "fieldtype": "Section Break",
+   "label": "Days"
+  },
+  {
+   "fieldname": "days_posted",
+   "fieldtype": "Int",
+   "label": "Posted",
+   "read_only": 1
+  },
+  {
+   "description": "Posted earlier and re-checked against Lithos.",
+   "fieldname": "days_existing",
+   "fieldtype": "Int",
+   "label": "Already Posted",
+   "read_only": 1
+  },
+  {
+   "fieldname": "days_draft",
+   "fieldtype": "Int",
+   "label": "Left as Draft",
+   "read_only": 1
+  },
+  {
+   "fieldname": "days_no_sales",
+   "fieldtype": "Int",
+   "label": "No Sales",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_days",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "days_held",
+   "fieldtype": "Int",
+   "label": "Held",
+   "read_only": 1
+  },
+  {
+   "fieldname": "days_changed",
+   "fieldtype": "Int",
+   "label": "Changed in Lithos",
+   "read_only": 1
+  },
+  {
+   "fieldname": "days_failed",
+   "fieldtype": "Int",
+   "label": "Failed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sec_lines",
+   "fieldtype": "Section Break",
+   "label": "Lines and Amounts"
+  },
+  {
+   "fieldname": "lines_unmapped",
+   "fieldtype": "Int",
+   "label": "Unmapped Lines",
+   "read_only": 1
+  },
+  {
+   "fieldname": "lines_without_bom",
+   "fieldtype": "Int",
+   "label": "Lines Without a BOM",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_lines",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "lithos_net",
+   "fieldtype": "Currency",
+   "label": "Lithos Net Pulled",
+   "read_only": 1
+  },
+  {
+   "fieldname": "erpnext_net",
+   "fieldtype": "Currency",
+   "label": "ERPNext Net Posted",
+   "read_only": 1
+  },
+  {
+   "fieldname": "invoices_posted",
+   "fieldtype": "Int",
+   "label": "Sales Invoices Posted",
+   "read_only": 1
+  },
+  {
+   "fieldname": "consumption_pending",
+   "fieldtype": "Int",
+   "label": "Consumption Pending",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sec_message",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "message",
+   "fieldtype": "Small Text",
+   "label": "Message",
+   "read_only": 1
+  }
+ ],
+ "in_create": 1,
+ "index_web_pages_for_search": 0,
+ "links": [
+  {
+   "link_doctype": "Lithos Sync Log",
+   "link_fieldname": "sync_run"
+  }
+ ],
+ "modified": "2026-11-04 09:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Al-Qubaisi Modifications",
+ "name": "Lithos Sync Run",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1
+  },
+  {
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Lithos Manager",
+   "share": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 0
+}

@@ -1,0 +1,26 @@
+{
+ "content": null,
+ "creation": "2026-11-03 18:00:00.000000",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2026-11-03 18:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Al-Qubaisi Modifications",
+ "name": "lithos-sync-console",
+ "owner": "Administrator",
+ "page_name": "lithos-sync-console",
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Lithos Manager"
+  }
+ ],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0,
+ "title": "Lithos Sync Console"
+}

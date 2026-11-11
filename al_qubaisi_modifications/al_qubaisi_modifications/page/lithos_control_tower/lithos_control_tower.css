@@ -1,0 +1,173 @@
+.lithos-tower {
+	padding: var(--padding-md) 0;
+}
+
+.lithos-tower-section {
+	margin-bottom: var(--margin-md);
+}
+
+.lithos-tower-section-head {
+	display: flex;
+	align-items: baseline;
+	gap: var(--margin-sm);
+	margin-bottom: var(--margin-xs);
+}
+
+.lithos-tower-section-head h5 {
+	margin: 0;
+}
+
+.lithos-tower-section-head span {
+	font-size: var(--text-sm);
+}
+
+.lithos-tower-cards {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+	gap: var(--margin-sm);
+}
+
+.lithos-tower-card {
+	border: 1px solid var(--border-color);
+	border-radius: var(--border-radius-md);
+	background: var(--card-bg);
+	padding: var(--padding-sm) var(--padding-md);
+}
+
+.lithos-tower-clickable {
+	cursor: pointer;
+}
+
+.lithos-tower-clickable:hover {
+	border-color: var(--gray-400);
+}
+
+.lithos-tower-card-label {
+	color: var(--text-muted);
+	font-size: var(--text-sm);
+}
+
+.lithos-tower-card-value {
+	font-size: var(--text-xl);
+	font-weight: 600;
+	color: var(--text-color);
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.lithos-tower-of {
+	font-size: var(--text-base);
+	font-weight: 400;
+	color: var(--text-muted);
+}
+
+.lithos-tower-card-sub {
+	color: var(--text-muted);
+	font-size: var(--text-xs);
+}
+
+.lithos-tower-red {
+	border-left: 3px solid var(--red-500);
+}
+
+.lithos-tower-yellow {
+	border-left: 3px solid var(--yellow-500);
+}
+
+.lithos-tower-orange {
+	border-left: 3px solid var(--orange-500);
+}
+
+.lithos-tower-note {
+	font-size: var(--text-sm);
+	margin: calc(-1 * var(--margin-xs)) 0 var(--margin-md);
+}
+
+.lithos-tower-charts {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--margin-md);
+}
+
+.lithos-tower-wide {
+	grid-column: 1 / -1;
+}
+
+.lithos-tower-panel {
+	border: 1px solid var(--border-color);
+	border-radius: var(--border-radius-md);
+	background: var(--card-bg);
+	padding: var(--padding-md);
+	min-width: 0;
+}
+
+.lithos-tower-table {
+	font-size: var(--text-sm);
+	margin-bottom: 0;
+	font-variant-numeric: tabular-nums;
+}
+
+.lithos-tower-key {
+	display: inline-block;
+	width: 12px;
+	height: 2px;
+	border-radius: 1px;
+	margin-right: 6px;
+	vertical-align: middle;
+}
+
+.lithos-tower-bars {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.lithos-tower-bar-row {
+	display: grid;
+	grid-template-columns: minmax(90px, 1.2fr) 2fr minmax(90px, auto);
+	align-items: center;
+	gap: var(--margin-sm);
+	font-size: var(--text-sm);
+}
+
+.lithos-tower-bar-label {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.lithos-tower-bar-label span + span {
+	margin-left: 4px;
+}
+
+.lithos-tower-bar-track {
+	height: 14px;
+}
+
+.lithos-tower-bar {
+	height: 100%;
+	min-width: 2px;
+	border-radius: 0 4px 4px 0;
+}
+
+.lithos-tower-bar-value {
+	text-align: right;
+	font-variant-numeric: tabular-nums;
+}
+
+.lithos-tower-reconciled {
+	padding: var(--padding-lg) 0;
+}
+
+.lithos-tower-empty {
+	padding: var(--padding-lg);
+	text-align: center;
+}
+
+@media (max-width: 767px) {
+	.lithos-tower-charts {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}

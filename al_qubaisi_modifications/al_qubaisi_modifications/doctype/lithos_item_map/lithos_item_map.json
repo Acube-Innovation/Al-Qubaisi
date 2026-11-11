@@ -1,0 +1,187 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 0,
+ "autoname": "LIM-.#####",
+ "creation": "2026-11-03 09:00:00",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "lithos_item_name",
+  "store",
+  "barcode",
+  "col_break_lithos",
+  "item_code",
+  "item_name",
+  "default_bom",
+  "status",
+  "sec_history",
+  "first_sold",
+  "last_sold",
+  "col_break_history",
+  "mapped_by",
+  "mapped_on",
+  "match_key",
+  "scope_key"
+ ],
+ "fields": [
+  {
+   "description": "The item name exactly as LithosPOS sends it.",
+   "fieldname": "lithos_item_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Lithos Item Name",
+   "reqd": 1
+  },
+  {
+   "description": "Leave blank to apply to every store. A store-specific row wins over a blank one.",
+   "fieldname": "store",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Store",
+   "options": "Lithos Store"
+  },
+  {
+   "description": "Barcode as LithosPOS sends it. Filled in by the sync.",
+   "fieldname": "barcode",
+   "fieldtype": "Data",
+   "label": "Lithos Barcode"
+  },
+  {
+   "fieldname": "col_break_lithos",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "ERPNext Item",
+   "options": "Item"
+  },
+  {
+   "fetch_from": "item_code.item_name",
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item Name",
+   "read_only": 1
+  },
+  {
+   "description": "The item's current default BOM. Every sold item needs one (D9).",
+   "fieldname": "default_bom",
+   "fieldtype": "Link",
+   "is_virtual": 1,
+   "label": "Default BOM",
+   "options": "BOM",
+   "read_only": 1
+  },
+  {
+   "default": "Unmapped",
+   "description": "Ignored lines are left out of Branch Sales. Their value shows as the day's variance.",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Unmapped\nMatched by barcode\nMatched by name\nAuto-created\nManual\nIgnored"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "sec_history",
+   "fieldtype": "Section Break",
+   "label": "History"
+  },
+  {
+   "description": "First day LithosPOS sold this name.",
+   "fieldname": "first_sold",
+   "fieldtype": "Date",
+   "label": "First Sold",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_sold",
+   "fieldtype": "Date",
+   "label": "Last Sold",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_history",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "mapped_by",
+   "fieldtype": "Link",
+   "label": "Mapped By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "mapped_on",
+   "fieldtype": "Datetime",
+   "label": "Mapped On",
+   "read_only": 1
+  },
+  {
+   "description": "Lithos item name with case and spacing normalised. The sync matches on this.",
+   "fieldname": "match_key",
+   "fieldtype": "Data",
+   "label": "Match Key",
+   "read_only": 1
+  },
+  {
+   "fieldname": "scope_key",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Scope Key",
+   "length": 200,
+   "read_only": 1,
+   "unique": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-11-03 18:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Al-Qubaisi Modifications",
+ "name": "Lithos Item Map",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "import": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "import": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Lithos Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "search_fields": "item_code,status",
+ "show_title_field_in_link": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "lithos_item_name",
+ "track_changes": 1
+}

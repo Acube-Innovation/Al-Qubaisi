@@ -1,0 +1,224 @@
+.lithos-console {
+	padding: var(--padding-md) 0;
+}
+
+.lithos-cards {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+	gap: var(--margin-sm);
+	margin-bottom: var(--margin-md);
+}
+
+.lithos-card {
+	border: 1px solid var(--border-color);
+	border-radius: var(--border-radius-md);
+	background: var(--card-bg);
+	padding: var(--padding-sm) var(--padding-md);
+}
+
+.lithos-card-label {
+	color: var(--text-muted);
+	font-size: var(--text-sm);
+}
+
+.lithos-card-value {
+	font-size: var(--text-2xl);
+	font-weight: 600;
+	color: var(--text-color);
+}
+
+.lithos-card-of {
+	font-size: var(--text-base);
+	font-weight: 400;
+	color: var(--text-muted);
+}
+
+.lithos-card-red {
+	border-left: 3px solid var(--red-500);
+}
+
+.lithos-card-yellow {
+	border-left: 3px solid var(--yellow-500);
+}
+
+.lithos-card-purple {
+	border-left: 3px solid var(--purple-500);
+}
+
+.lithos-card-orange {
+	border-left: 3px solid var(--orange-500);
+}
+
+.lithos-legend {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--margin-md);
+	font-size: var(--text-sm);
+	color: var(--text-muted);
+	margin-bottom: var(--margin-sm);
+}
+
+.lithos-swatch {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	border-radius: 3px;
+	margin-right: 4px;
+	vertical-align: -1px;
+	border: 1px solid var(--border-color);
+}
+
+.lithos-grid-wrap {
+	overflow-x: auto;
+	border: 1px solid var(--border-color);
+	border-radius: var(--border-radius-md);
+	background: var(--card-bg);
+	margin-bottom: var(--margin-lg);
+}
+
+.lithos-grid {
+	border-collapse: separate;
+	border-spacing: 2px;
+	font-size: var(--text-sm);
+	width: 100%;
+}
+
+.lithos-grid th {
+	font-weight: 500;
+	text-align: center;
+	padding: 4px 2px;
+	white-space: nowrap;
+}
+
+.lithos-grid .lithos-weekend {
+	color: var(--text-muted);
+}
+
+.lithos-grid .lithos-store-col {
+	position: sticky;
+	left: 0;
+	z-index: 1;
+	background: var(--card-bg);
+	text-align: left;
+	min-width: 220px;
+	max-width: 260px;
+	padding: 4px 8px;
+	vertical-align: top;
+}
+
+.lithos-outlet {
+	margin-left: 4px;
+}
+
+.lithos-cell {
+	min-width: 44px;
+	height: 44px;
+	text-align: center;
+	border-radius: 4px;
+	font-variant-numeric: tabular-nums;
+	font-size: var(--text-xs);
+}
+
+.lithos-cell[data-store] {
+	cursor: pointer;
+}
+
+.lithos-cell[data-store]:hover {
+	outline: 2px solid var(--primary);
+}
+
+.lithos-green {
+	background: var(--bg-green);
+	color: var(--text-on-green);
+}
+
+.lithos-orange {
+	background: var(--bg-orange);
+	color: var(--text-on-orange);
+}
+
+.lithos-yellow {
+	background: var(--bg-yellow);
+	color: var(--text-on-yellow);
+}
+
+.lithos-purple {
+	background: var(--bg-purple);
+	color: var(--text-on-purple);
+}
+
+.lithos-red {
+	background: var(--bg-red);
+	color: var(--text-on-red);
+}
+
+.lithos-light-gray {
+	background: var(--bg-light-gray);
+	color: var(--text-muted);
+}
+
+.lithos-missing {
+	background: transparent;
+	color: var(--red-500);
+	border: 1px dashed var(--red-500);
+}
+
+.lithos-none {
+	background: transparent;
+	color: var(--text-light);
+}
+
+.lithos-other-company {
+	box-shadow: inset 0 0 0 2px var(--orange-500);
+}
+
+.lithos-empty {
+	padding: var(--padding-xl);
+	text-align: center;
+}
+
+.lithos-runs h5 {
+	margin-bottom: var(--margin-sm);
+}
+
+.lithos-cell-details th {
+	width: 35%;
+	font-weight: 500;
+	color: var(--text-muted);
+}
+
+.lithos-cell {
+	position: relative;
+}
+
+.lithos-ledger-dot {
+	display: inline-block;
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	vertical-align: 1px;
+	margin-right: 4px;
+}
+
+.lithos-cell .lithos-ledger-dot {
+	position: absolute;
+	right: 3px;
+	bottom: 3px;
+	margin: 0;
+}
+
+.lithos-dot-green {
+	background: var(--green-500);
+}
+
+.lithos-dot-gray {
+	background: var(--gray-500);
+}
+
+.lithos-dot-orange {
+	background: var(--orange-500);
+}
+
+.lithos-dot-red {
+	background: var(--red-500);
+}

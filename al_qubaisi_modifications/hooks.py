@@ -151,6 +151,21 @@ accounting_dimension_doctypes = ["Material Request"]
 # ---------------
 # Hook on document methods and events
 
+doc_events = {
+	# Supply from Al Qubaisi Group to the outlet companies, at cost (M7, D12).
+	"Sales Order": {
+		"before_validate": "al_qubaisi_modifications.lithos_supply.sales_order_before_validate",
+	},
+	"Sales Invoice": {
+		"before_validate": "al_qubaisi_modifications.lithos_supply.sales_invoice_before_validate",
+		"on_submit": "al_qubaisi_modifications.lithos_supply.sales_invoice_on_submit",
+		"before_cancel": "al_qubaisi_modifications.lithos_supply.sales_invoice_before_cancel",
+	},
+	"Purchase Invoice": {
+		"on_submit": "al_qubaisi_modifications.lithos_supply.purchase_invoice_on_submit",
+	},
+}
+
 # doc_events = {
 # 	"*": {
 # 		"on_update": "method",
@@ -168,6 +183,9 @@ scheduler_events = {
 		"al_qubaisi_modifications.al_qubaisi_modifications.doctype.employee_documents.employee_documents.send_expiry_digest",
 		"al_qubaisi_modifications.al_qubaisi_modifications.doctype.company_documents.company_documents.update_document_statuses",
 		"al_qubaisi_modifications.al_qubaisi_modifications.doctype.company_documents.company_documents.send_expiry_digest",
+	],
+	"hourly": [
+		"al_qubaisi_modifications.lithos.retry_failed",
 	],
 	"cron": {
 		# 02:00 Asia/Dubai - late enough for tills trading past midnight to have closed out.
@@ -192,9 +210,10 @@ scheduler_events = {
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
 # along with any modifications made in other Frappe apps
-# override_doctype_dashboards = {
-# 	"Task": "al_qubaisi_modifications.task.get_dashboard_data"
-# }
+override_doctype_dashboards = {
+	# The Lithos names mapped to an item ("Lithos aliases", M3).
+	"Item": "al_qubaisi_modifications.lithos_workbench.item_dashboard",
+}
 
 # exempt linked doctypes from being automatically cancelled
 #

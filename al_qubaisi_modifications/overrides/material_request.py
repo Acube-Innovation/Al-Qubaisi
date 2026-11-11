@@ -28,14 +28,22 @@ def make_sales_order(source_name, target_doc=None):
 	"""
 
 	def set_missing_values(source, target):
+		from al_qubaisi_modifications.lithos_supply import price_at_cost, supply_customer
+
 		if source.customer and not target.customer:
 			target.customer = source.customer
+		# A branch customer stands for a branch with no company of its own. Once the
+		# branch's store posts into an outlet company, it buys as that company (M7).
+		if frappe.db.get_value("Customer", target.customer, "custom_is_branch"):
+			branch = source.get("branch") or frappe.db.get_value("Customer", target.customer, "custom_branch")
+			target.customer = supply_customer(branch, source.company) or target.customer
 
 		# Carry the parent Branch accounting dimension onto the Sales Order.
 		if source.get("branch") and not target.get("branch"):
 			target.branch = source.branch
 
 		target.run_method("set_missing_values")
+		price_at_cost(target)
 		target.run_method("calculate_taxes_and_totals")
 
 	def update_item(source, target, source_parent):

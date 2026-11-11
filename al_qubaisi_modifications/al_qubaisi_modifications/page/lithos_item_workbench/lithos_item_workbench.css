@@ -1,0 +1,56 @@
+.lithos-workbench {
+	padding: var(--padding-md) 0;
+}
+
+.lithos-views {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--margin-xs);
+	margin-bottom: var(--margin-sm);
+}
+
+.lithos-count {
+	margin-left: 4px;
+	opacity: 0.75;
+}
+
+.lithos-held-note {
+	border-left: 3px solid var(--yellow-500);
+	background: var(--bg-yellow);
+	color: var(--text-on-yellow);
+	padding: var(--padding-sm) var(--padding-md);
+	border-radius: var(--border-radius);
+	margin-bottom: var(--margin-sm);
+}
+
+.lithos-table-wrap {
+	overflow-x: auto;
+	border: 1px solid var(--border-color);
+	border-radius: var(--border-radius-md);
+	background: var(--card-bg);
+}
+
+.lithos-table {
+	margin-bottom: 0;
+	font-size: var(--text-sm);
+}
+
+.lithos-table td {
+	vertical-align: top;
+}
+
+.lithos-table .indicator-pill {
+	white-space: nowrap;
+}
+
+.lithos-empty {
+	padding: var(--padding-xl);
+	text-align: center;
+}
+
+.lithos-fix-info {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--margin-sm);
+	align-items: center;
+}
